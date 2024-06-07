@@ -1,3 +1,4 @@
+import { MessageSeverity } from './../models/message.model';
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { MatTab, MatTabGroup } from "@angular/material/tabs";
 import { CoursesCardListComponent } from "../courses-card-list/courses-card-list.component";
@@ -5,6 +6,7 @@ import { Course, sortCoursesBySeqNo } from '../models/course.model';
 import { CoursesService } from '../services/courses.service';
 import { openEditCourseDialog } from '../edit-course-dialog/edit-course-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MessagesService } from '../messages/messages.service';
 
 @Component({
   selector: 'home',
@@ -22,6 +24,8 @@ export class HomeComponent {
   #courses = signal<Course[]>([]);
 
   couserService = inject(CoursesService);
+
+  messageService = inject(MessagesService);
 
   dialog = inject(MatDialog);
 
@@ -50,7 +54,8 @@ export class HomeComponent {
       const courses = await this.couserService.loadAllCourses();
       this.#courses.set(courses.sort(sortCoursesBySeqNo));
     } catch (err) {
-      alert(`Error loading courses`);
+      // alert(`Error loading courses`);
+      this.messageService.showMessage(`Error loading courses`, "error");
       console.error(err);
     }
   }
