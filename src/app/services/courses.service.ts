@@ -15,7 +15,7 @@ export class CoursesService {
 
   env = environment
 
-  async loadAllCourses(): Promise<Course[]> {
+  async loadAllCourses():Promise<Course[]> {
     const courses$ =
       this.http.get<GetCoursesResponse>(`${this.env.apiRoot}/courses`);
     const response = await firstValueFrom(courses$);
